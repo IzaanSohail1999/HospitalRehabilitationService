@@ -59,5 +59,24 @@ app.post("/saveSuperAdmin", async (req, res) => {
     // }
 });
 
+app.post('/Login',async(req,res)=>{
+    if(req.body.email && req.body.password && req.body.post){
+        const email = req.body.email;
+        const result = await UserModel.find({ email });
+        console.log(result.length);
+     if(result.length > 0){
+         res.status(200).json({
+            result: result
+        });
+     }
+     else{
+         res.status(404).send('user not found');
+     }
+    }
+    else{
+         res.status(406).send('Invalid Information');
+    }
+ })
+
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, console.log(`Server started on port ${PORT}`));
