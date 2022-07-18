@@ -20,3 +20,44 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true },
         console.log("error")
     }
 });
+
+//initialize schema
+const Schema = mongoose.Schema;
+
+//created a new schema
+const UserSchema = new Schema({
+    email: String,
+    password: String,
+    post: String
+});
+
+const UserModel = mongoose.model("User", UserSchema);
+
+app.post("/saveSuperAdmin", async (req, res) => {
+    console.log("Inside Post Api")
+    console.log(req.body.email)
+    console.log(req.body.password)
+    console.log(req.body.post)
+    
+    // const cnic = req.body.email;
+    // const users = await UserModel.find({ email });
+    // if (users.length === 0) {
+        try {
+            const user = new UserModel({
+                email: req.body.email,
+                password: req.body.password,
+                post: req.body.post
+            })
+
+            await user.save();
+            res.send("User Data Saved");
+        } catch (error) {
+            return error;
+        }
+    // } else {
+    //     res.send("email Already Exist in Database")
+    // }
+});
+
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, console.log(`Server started on port ${PORT}`));
