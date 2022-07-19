@@ -30,12 +30,12 @@ const Login = () => {
     }
     return (
         <div className="login-bg">
-            <div id="wrap" style={{ marginTop: "15vw" }}>
+            <div id="wrap">
                 <div className="loginParentContainer">
                     <div className="subContainer">
                         <div style={{ textAlign: "center" }}>
                             <img src={Logo} alt="Stonestep Logo" />
-                            <h4>Rehabilitation Service Provider Directory</h4>
+                            <h2>Rehabilitation Service Provider Directory</h2>
                         </div>
                         <div className="loginForm">
                             <label for="">Email ID</label>
