@@ -6,7 +6,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/Login" element={<Login/>} />
+          <Route exact path="/" element={<Login/>} />
           
         </Routes>
       </BrowserRouter>
