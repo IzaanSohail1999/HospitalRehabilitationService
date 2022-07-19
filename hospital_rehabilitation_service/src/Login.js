@@ -24,13 +24,13 @@ const Login = () => {
             navigate('/');
         } else {
             alert(result.result);
-        }
+        } 
         console.log(result);
 
     }
     return (
         <div className="login-bg">
-            <div id="wrap" style={{ marginTop: "10vw" }}>
+            <div id="wrap" style={{ marginTop: "15vw" }}>
                 <div className="loginParentContainer">
                     <div className="subContainer">
                         <div style={{ textAlign: "center" }}>
