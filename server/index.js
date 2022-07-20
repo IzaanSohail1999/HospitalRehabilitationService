@@ -48,8 +48,8 @@ app.post('/Login',async(req,res)=>{
  })
 
  app.post('/ForgetPassword',async(req,res)=>{
-    if(req.body.content && req.body.subject){
-        sendEmail(req.body.subject, req.body.content)
+    if(req.body.content && req.body.subject && req.body.from && req.body.to){
+        sendEmail(req.body.subject, req.body.content, req.body.from, req.body.to)
         res.status(406).send({result:'Success'});
     }else{
          res.status(406).send({result:'Invalid Information'});
@@ -66,10 +66,10 @@ app.post('/Login',async(req,res)=>{
              }
      })
 
-     function sendEmail(subject, content) {
+     function sendEmail(subject, content, from, to) {
         message = {
-            from: "from-example@email.com",
-            to: "to-example@email.com",
+            from: from,
+            to: to,
             subject: subject,
             text: content
        }
