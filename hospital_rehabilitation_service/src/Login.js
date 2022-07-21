@@ -3,11 +3,14 @@ import "./css/bootstrap.css";
 import Logo from "./img/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Cookies from 'universal-cookie';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [pass, setPass] = useState('');
     const navigate = useNavigate();
+    const cookies = new Cookies();
+
     const isValid = async () => {
         let result = await fetch('http://localhost:8080/Login', {
             method: 'post',
@@ -20,7 +23,8 @@ const Login = () => {
             }
         });
         result = await result.json();
-        if (result.post) {
+        if (result.auth) {
+            cookies.set('jwtoken', result.auth);
             navigate('/');
         } else {
             alert(result.result);

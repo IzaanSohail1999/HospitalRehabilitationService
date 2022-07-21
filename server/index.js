@@ -1,16 +1,36 @@
 require('./config');
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const Users = require('./Schema/Users');
+const jwt = require('jsonwebtoken');
 
-app.use(express.json())
+app.use(express.json());
+// app.use(cookieParser());
+
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "*");
     res.header("Access-Control-Allow-Methods", "*")
     next();
   });
+
+const verifyToken = (req, res, next)=>{
+    let token = req.headers['authorization'];
+    if(token){
+        token = token.split(' ')[1];
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET,(err, valid)=>{
+            if(err){
+                res.status(403).send({result:"Please provide valid Token"});
+            }else{
+                next();
+            }
+        });
+    }else{
+        res.status(401).send({result:"Please provide Token to get access"});
+    }
+}
 
 app.post("/saveSuperAdmin", async (req, res) => {
     console.log("Inside Post Api")
@@ -32,11 +52,15 @@ app.post("/saveSuperAdmin", async (req, res) => {
         }
 });
 
-app.post('/Login',async(req,res)=>{
+app.post('/Login', async(req,res)=>{
     if(req.body.email && req.body.password){
      let result = await Users.findOne(req.body).select('-password -email');
      if(result){
-         res.send(result);
+        // creating token
+        const token = jwt.sign(result._id.toString(),process.env.ACCESS_TOKEN_SECRET);        
+        res.send({result, auth: token});
+        
+        
      }
      else{
          res.status(404).send({result:'user not found'});
@@ -46,6 +70,8 @@ app.post('/Login',async(req,res)=>{
          res.status(406).send({result:'Invalid Information'});
     }
  })
+
+
 
  app.post('/ForgetPassword',async(req,res)=>{
     if(req.body.content && req.body.subject && req.body.from && req.body.to){
