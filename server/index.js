@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 const Users = require('./Schema/Users');
 const jwt = require('jsonwebtoken');
+let hash = '';
 
 app.use(express.json());
 // app.use(cookieParser());
@@ -15,6 +16,16 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Methods", "*")
     next();
   });
+  
+const nodemailer = require('nodemailer');
+let transporter = nodemailer.createTransport({
+        host: 'smtp.mailtrap.io',
+        port: 2525,
+        auth: {
+        user: "24bf5736da2cf2",
+        pass: "0670d8d721aed5"
+        }
+})
 
 const verifyToken = (req, res, next)=>{
     let token = req.headers['authorization'];
@@ -39,7 +50,7 @@ app.post("/saveSuperAdmin", async (req, res) => {
     console.log(req.body.post)
     
         try {
-            const user = new UserModel({
+            const user = new Users({
                 email: req.body.email,
                 password: req.body.password,
                 post: req.body.post
@@ -71,42 +82,109 @@ app.post('/Login', async(req,res)=>{
     }
  })
 
-
-
  app.post('/ForgetPassword',async(req,res)=>{
-    if(req.body.content && req.body.subject && req.body.from && req.body.to){
-        sendEmail(req.body.subject, req.body.content, req.body.from, req.body.to)
-        res.status(406).send({result:'Success'});
-    }else{
-         res.status(406).send({result:'Invalid Information'});
+    if(req.body.email)
+    {
+        for(i = 0; i < 4 ; i++){
+            let x = Math.floor((Math.random() * 9) + 1);
+            hash = hash + x.toString();
+        }
+        console.log(hash);
+        sendEmail(req.body.email, hash)
+        res.status(200).send({result:'Success'});
+    }
+    else
+    {
+        res.status(406).send({result:'Invalid Information'});
     }
  })
 
-    const nodemailer = require('nodemailer');
-      let transporter = nodemailer.createTransport({
-             host: 'smtp.mailtrap.io',
-             port: 2525,
-             auth: {
-                user: "24bf5736da2cf2",
-                pass: "0670d8d721aed5"
-             }
-     })
-
-     function sendEmail(subject, content, from, to) {
-        message = {
-            from: from,
-            to: to,
-            subject: subject,
-            text: content
-       }
-       transporter.sendMail(message, function(err, info) {
-            if (err) {
-              console.log(err)
-            } else {
-              console.log(info);
-            }
-     })
+ app.post('/verifyOTP',async(req,res)=>{
+    if(req.body.otp)
+    {
+        if((req.body.otp.toString()) == hash){
+            hash = '';
+            res.status(200).send({result:'Success'});
+        }
+        else
+        {
+            res.status(406).send({result:'Invalid OTP'});
+        }
     }
+    else
+    {
+        res.status(406).send({result:'Missing OTP'});
+    }
+ })
+
+app.get("/getUser", async (req, res) => {
+    console.log("Inside Get User Api")
+    console.log(typeof(req.query.email));
+    const param = req.query.email;
+    console.log(param)
+    try {
+        const user = await Users.find();
+        if (user.length > 0) {
+            res.status(200).json({
+                user: user
+            });
+        } else (
+            res.status(404).send({msg: "User Not Found"})
+        )
+    } catch (error) {
+        return error;
+    }
+});
+
+app.put("/updatePassword", async (req, res) => {
+    console.log("Inside Put Function")
+    const email = req.body.email;
+    console.log(req.body)
+    try {
+        const update = { $set: { email: req.body.email, post: req.body.post, password: req.body.password } };
+        const filter = { email: email };
+        console.log(filter)
+        await Users.updateOne(filter, update);
+        res.send("User Data Updated");
+    } catch (error) {
+        return error;
+    }
+});
+
+// app.post('/changePassword',async(req,res)=>{
+//     if(req.body.password)
+//     {
+//         if(){
+//             hash = '';
+//             res.status(200).send({result:'Success'});
+//         }
+//         else
+//         {
+//             res.status(406).send({result:'Invalid OTP'});
+//         }
+//     }
+//     else
+//     {
+//         res.status(406).send({result:'Missing Password'});
+//     }
+//  })
+
+
+function sendEmail(email, hash) {
+    message = {
+        from: "goodcore@gmail.com",
+        to: email,
+        subject: "Password Reset Link",
+        text: "Your OTP is " + hash + "."
+    }
+    transporter.sendMail(message, function(err, info) {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log(info);
+        }
+     })
+}
 
 //  function setupRoutes() {
 //     const routes = require("./routes");

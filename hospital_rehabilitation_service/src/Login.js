@@ -25,13 +25,14 @@ const Login = () => {
         result = await result.json();
         if (result.auth) {
             cookies.set('jwtoken', result.auth);
-            navigate('/');
+            
+            window.location.href = "/?" + result.result.post;
         } else {
             alert(result.result);
         } 
-        console.log(result);
-
+        console.log(result.result.post);
     }
+    
     return (
         <div className="login-bg">
             <div id="wrap">
@@ -47,7 +48,7 @@ const Login = () => {
                             <label for="">Password</label>
                             <input onChange={(e) => setPass(e.target.value)} type="password" className="field" /><br />
                             <div style={{ textAlign: "center" }}>
-                                <Link className="forgot" to="#_">Forgot Password?</Link>
+                                <Link className="forgot" to="/ResetPassword">Forgot Password?</Link>
                             </div>
                             <button onClick={isValid} type="submit" className="Loginbtn" >Login</button>
 

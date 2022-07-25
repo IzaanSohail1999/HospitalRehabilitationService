@@ -2,8 +2,26 @@ import Logo_inner from "./img/logo_inner.png";
 import User_icon from "./img/user_icon.png";
 import "./css/style.css";
 import "./css/chosen.css";
+import React, { useState, useEffect } from 'react';
 
 const Home = () => {
+    const [post, setPost] = useState('');
+    useEffect(() => {
+        InitPost();
+    }, []);
+
+    async function InitPost() {
+        const queryString = window.location.search;
+        let text = queryString.split("?")
+        const temp1 = text[1]
+        const temp = temp1.split("%20")
+        const first = temp[0]
+        const last = temp[1]
+        const fullPost = first + " " + last;
+        console.log(fullPost)
+        setPost(fullPost)
+    }
+
     return (
         <div className="bg_main">
             <div id="wrap">
@@ -18,8 +36,7 @@ const Home = () => {
                                 <div className="navigation">
                                     <div className="userLnk">
                                         <div className="dropdown">
-                                            <button className="btn dropdown-toggle" type="button" data-toggle="dropdown" style={{background:"none"}}> <img src={User_icon} /> Super Admin
-                                                <span className="caret"></span></button>
+                                            <button className="btn dropdown-toggle" type="button" data-toggle="dropdown" style={{ background: "none" }}> <img src={User_icon} /> {post}<span className="caret"></span></button>
                                             <ul className="dropdown-menu">
                                                 <li><a href="#">Log Out</a></li>
 
