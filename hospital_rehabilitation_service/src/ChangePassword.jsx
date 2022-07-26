@@ -10,6 +10,10 @@ function ChangePassword(props) {
     const email = text[1]
     const [password, setPassword] = useState('');
     const [conpass, setConnpass] = useState('');
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [hospital, setHospital] = useState('');
+    const [departement, setDepartement] = useState('');
     const [fetchEmail, setFetchEmail] = useState('');
     const [post, setPost] = useState('');
     
@@ -17,7 +21,11 @@ function ChangePassword(props) {
         await axios.get(`http://localhost:8080/getUser?email=${email}`)
         .then((res) => {
             setFetchEmail(res.data.user[0].email)
-            setPost(res.data.user[0].post)
+            setPost(res.data.user[0].role)
+            setFirstName(res.data[0].firstName)
+            setLastName(res.data[0].lastName)
+            setHospital(res.data[0].hospital)
+            setDepartement(res.data[0].departement)
             console.log(fetchEmail)
         })
       }

@@ -28,8 +28,6 @@ function ResetPassword(props) {
     }
 
     const verifyOTP = async () => {
-        // const url = "/ChangePassword?" + email;
-        // window.location.href = url;
         let result = await fetch('http://localhost:8080/verifyOTP', {
             method: 'post',
             body: JSON.stringify({

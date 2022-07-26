@@ -241,7 +241,11 @@ body {
   float: left;
  
 }
-.actionBtn, .userLnk {
+.actionBtn  {
+  float: right;
+}
+
+.userLnk {
   float: right;
 }
 .SrPgHead {

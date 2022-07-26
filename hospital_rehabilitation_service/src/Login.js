@@ -26,11 +26,11 @@ const Login = () => {
         if (result.auth) {
             cookies.set('jwtoken', result.auth);
             
-            window.location.href = "/?" + result.result.post;
+            window.location.href = "/?" + result.result.role;
         } else {
             alert(result.result);
         } 
-        console.log(result.result.post);
+        console.log(result.result.role);
     }
     
     return (

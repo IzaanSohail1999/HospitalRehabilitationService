@@ -1,6 +1,11 @@
 import Logo_inner from "./img/logo_inner.png";
 import User_icon from "./img/user_icon.png";
+import "./css/bootstrap.css";
 import "./css/style.css";
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import Form from 'react-bootstrap/Form';
+import InputGroup from 'react-bootstrap/InputGroup';
 import "./css/chosen.css";
 import React, { useState, useEffect } from 'react';
 
@@ -36,25 +41,31 @@ const Home = () => {
                                 <div className="navigation">
                                     <div className="userLnk">
                                         <div className="dropdown">
-                                            <button className="btn dropdown-toggle" type="button" data-toggle="dropdown" style={{ background: "none" }}> <img src={User_icon} /> {post}<span className="caret"></span></button>
-                                            <ul className="dropdown-menu">
-                                                <li><a href="#">Log Out</a></li>
-
-                                            </ul>
+                                            <DropdownButton title={post} >      
+                                                <li><a href="/Login">Log Out</a></li>
+                                            </DropdownButton>
                                         </div>
                                     </div>
                                     <div className="actionBtn">
                                         <div className="dropdown">
-                                            <button className="btn btn-prm dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                                        <DropdownButton title= "Action">
+                                                <a href="/ManageUser">Manage Users</a>
+                                                <br/>
+                                                <a href="#">Mange Services</a>
+                                                <br/>
+                                                <a href="#">Manage Hospitals</a>
+                                                <br/>
+                                                <a href="#">Change Requests</a>
+                                            </DropdownButton>
+                                            {/* <button className="btn btn-prm dropdown-toggle" type="button" data-toggle="dropdown">Actions
                                                 <span className="caret"></span></button>
                                             <ul className="dropdown-menu" multiple>
                                                 <li><a href="#">Manage Users</a></li>
                                                 <li><a href="#">Mange Services</a></li>
                                                 <li><a href="#">Manage Hospitals</a></li>
-                                                <li><a href="#">Change Requestsv</a></li>
-                                            </ul>
+                                                <li><a href="#">Change Requests</a></li>
+                                            </ul> */}
                                         </div>
-
                                     </div>
 
                                 </div>

@@ -3,6 +3,8 @@ import Home from "./Home";
 import Login from "./Login";
 import ResetPassword from "./ResetPassword";
 import ChangePassword from "./ChangePassword";
+import ManageUser from "./ManageUser";
+
 
 function App() {
   return (
@@ -13,6 +15,7 @@ function App() {
           <Route exact path="/" element={<Home/>} />
           <Route exact path="/ResetPassword" element={<ResetPassword/>}/>
           <Route exact path="/ChangePassword" element={<ChangePassword/>}/>
+          <Route exact path="/ManageUser" element={<ManageUser/>}/>
         </Routes>
       </BrowserRouter>
     </>

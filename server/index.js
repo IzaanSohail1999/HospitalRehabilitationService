@@ -47,13 +47,40 @@ app.post("/saveSuperAdmin", async (req, res) => {
     console.log("Inside Post Api")
     console.log(req.body.email)
     console.log(req.body.password)
-    console.log(req.body.post)
+    console.log(req.body.role)
     
         try {
             const user = new Users({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                hospital: req.body.hospital,
+                departement: req.body.departement, 
                 email: req.body.email,
                 password: req.body.password,
-                post: req.body.post
+                role: req.body.role
+            })
+
+            await user.save();
+            res.send("User Data Saved");
+        } catch (error) {
+            return error;
+        }
+});
+
+
+app.post("/saveUser", async (req, res) => {
+    console.log("Inside Post Api")
+    console.log(req.body)
+    
+        try {
+            const user = new Users({
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
+                hospital: req.body.hospital,
+                departement: req.body.departement, 
+                email: req.body.email,
+                password: req.body.password,
+                role: req.body.role
             })
 
             await user.save();
@@ -64,18 +91,19 @@ app.post("/saveSuperAdmin", async (req, res) => {
 });
 
 app.post('/Login', async(req,res)=>{
-    if(req.body.email && req.body.password){
-     let result = await Users.findOne(req.body).select('-password -email');
-     if(result){
-        // creating token
-        const token = jwt.sign(result._id.toString(),process.env.ACCESS_TOKEN_SECRET);        
-        res.send({result, auth: token});
-        
-        
-     }
-     else{
-         res.status(404).send({result:'user not found'});
-     }
+    if(req.body.email && req.body.password)
+    {
+        console.log(req.body);
+        let result = await Users.findOne(req.body).select('-password -email');
+        console.log(result)
+        if(result){
+            // creating token
+            const token = jwt.sign(result._id.toString(),process.env.ACCESS_TOKEN_SECRET);        
+            res.send({result, auth: token});
+        }
+        else{
+            res.status(404).send({result:'user not found'});
+        }
     }
     else{
          res.status(406).send({result:'Invalid Information'});
@@ -141,7 +169,18 @@ app.put("/updatePassword", async (req, res) => {
     const email = req.body.email;
     console.log(req.body)
     try {
-        const update = { $set: { email: req.body.email, post: req.body.post, password: req.body.password } };
+        const update = {
+             $set: 
+                { 
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    hospital: req.body.hospital,
+                    departement: req.body.departement, 
+                    email: req.body.email,
+                    password: req.body.password,
+                    role: req.body.role
+                } 
+            };
         const filter = { email: email };
         console.log(filter)
         await Users.updateOne(filter, update);
