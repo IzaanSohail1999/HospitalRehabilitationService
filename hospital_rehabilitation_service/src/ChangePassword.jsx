@@ -1,60 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useContext} from 'react';
 import Logo from "./img/logo.png";
-import axios from 'axios';
+import { HospitalContext } from '../src/context/HospitalContext'
 
 
-
-function ChangePassword(props) {
+function ChangePassword() {
+    const {ChangePassword} = useContext(HospitalContext);
     const queryString = window.location.search;
     let text = queryString.split("?")
     const email = text[1]
+    const [confirmpass, setConfirmpass] = useState('');
     const [password, setPassword] = useState('');
-    const [conpass, setConnpass] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [hospital, setHospital] = useState('');
-    const [departement, setDepartement] = useState('');
-    const [fetchEmail, setFetchEmail] = useState('');
-    const [post, setPost] = useState('');
-    
-    async function FetchData(){
-        await axios.get(`http://localhost:8080/getUser?email=${email}`)
-        .then((res) => {
-            setFetchEmail(res.data.user[0].email)
-            setPost(res.data.user[0].role)
-            setFirstName(res.data[0].firstName)
-            setLastName(res.data[0].lastName)
-            setHospital(res.data[0].hospital)
-            setDepartement(res.data[0].departement)
-            console.log(fetchEmail)
-        })
-      }
 
-    useEffect(() => {
-        FetchData();
-      }, []);
-
-      
-
-    async function test(){
-        if(password == conpass){
-            console.log("Confirm")
-        }
-        else{
-            console.log("Reject")
-        }     
-        await axios.put(`http://localhost:8080/updatePassword`, {
-            email: fetchEmail,
-            password: password,
-            post: post
-        })
-        .then(function(response){
-            console.log(response.data);
-            window.location.href = "/Login";
-        })       
-
-        
-    }
+    function changePass(){
+        ChangePassword(email, password, confirmpass)
+    } 
 
     return (
         <div className="login-bg">
@@ -67,14 +26,12 @@ function ChangePassword(props) {
                     </div>
                     <div className="loginForm">
                         <label>Email</label>
-                        <input type="email" value= {fetchEmail} className="inputborder-btm field" /><br /><br />
-                        <label>Post</label>
-                        <input type="email" value= {post} className="inputborder-btm field" /><br /><br />
+                        <input type="email" value= {email} className="inputborder-btm field" /><br /><br />
                         <label>Input Password</label>
                         <input onChange={(e) => setPassword(e.target.value)} type="password" className="inputborder-btm field" /><br /><br />
                         <label>Confirm Password</label>
-                        <input onChange={(e) => setConnpass(e.target.value)} type="password" className="inputborder-btm field" /><br /><br />
-                        <button onClick={test} type="submit" className="Loginbtn" >Change Password</button>
+                        <input onChange={(e) => setConfirmpass(e.target.value)} type="password" className="inputborder-btm field" /><br /><br />
+                        <button onClick={changePass} type="submit" className="Loginbtn" >Change Password</button>
                     </div>
                 </div>
             </div>

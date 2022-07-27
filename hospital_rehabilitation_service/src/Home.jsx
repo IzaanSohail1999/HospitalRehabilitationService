@@ -7,25 +7,13 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import "./css/chosen.css";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { HospitalContext } from '../src/context/HospitalContext'
+import { Link, useNavigate } from "react-router-dom";
+
 
 const Home = () => {
-    const [post, setPost] = useState('');
-    useEffect(() => {
-        InitPost();
-    }, []);
-
-    async function InitPost() {
-        const queryString = window.location.search;
-        let text = queryString.split("?")
-        const temp1 = text[1]
-        const temp = temp1.split("%20")
-        const first = temp[0]
-        const last = temp[1]
-        const fullPost = first + " " + last;
-        console.log(fullPost)
-        setPost(fullPost)
-    }
+    const { role, Logout } = useContext(HospitalContext);
 
     return (
         <div className="bg_main">
@@ -41,21 +29,21 @@ const Home = () => {
                                 <div className="navigation">
                                     <div className="userLnk">
                                         <div className="dropdown">
-                                            <DropdownButton title={post} >      
-                                                <li><a href="/Login">Log Out</a></li>
+                                            <DropdownButton title={role} >
+                                                <li><div onClick={Logout}>Log Out</div></li>
                                             </DropdownButton>
                                         </div>
                                     </div>
                                     <div className="actionBtn">
                                         <div className="dropdown">
-                                        <DropdownButton title= "Action">
-                                                <a href="/ManageUser">Manage Users</a>
-                                                <br/>
-                                                <a href="#">Mange Services</a>
-                                                <br/>
-                                                <a href="#">Manage Hospitals</a>
-                                                <br/>
-                                                <a href="#">Change Requests</a>
+                                            <DropdownButton title="Action">
+                                                <Link to="/ManageUser">Manage Users</Link>
+                                                <br />
+                                                <Link to="#">Mange Services</Link>
+                                                <br />
+                                                <Link to="#">Manage Hospitals</Link>
+                                                <br />
+                                                <Link to="#">Change Requests</Link>
                                             </DropdownButton>
                                             {/* <button className="btn btn-prm dropdown-toggle" type="button" data-toggle="dropdown">Actions
                                                 <span className="caret"></span></button>
@@ -67,19 +55,14 @@ const Home = () => {
                                             </ul> */}
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
                         </div>
                     </div>
-
                 </div>
                 <div className="mainpgContainer">
-
                     <h1 className="hmeMainHead">Discover</h1>
                     <h2 className="hmeSubHead">Best Rehabilitation Centre Near You</h2>
-
                     <div className="boxone">
                         <span>Choose Service</span>
                         <div className="selectcontainer" style={{ width: "100%" }}>
@@ -93,38 +76,27 @@ const Home = () => {
                                 <option value="United States">Two</option>
                                 <option value="United States">One Service Provider</option>
                                 <option value="United States">Two</option>
-
                             </select>
                         </div>
                     </div>
                     <div className="boxtwo">
                         <ul className="unstyled hmeRdo" style={{ paddingLeft: "0px", marginBottom: "0px" }}>
-
                             <li >
                                 <input type="radio" id="test1" name="radio-group" />
                                 <label for="test1">Post Code</label>
-
                             </li>
                             <li >
                                 <input type="radio" id="test2" name="radio-group" />
                                 <label for="test2">Hospital</label>
-
-
                             </li>
                         </ul>
-
                         <input type="text" placeholder="e.g. 75689" className="filterTxt" style={{ marginTop: "5px", width: "100%", marginLeft: "0px" }} />
-
                     </div>
-
                     <div className="boxthree">
                         <a href="" className="Btn">SEARCH</a>
                     </div>
 
                 </div>
-
-
-
             </div>
         </div>
     );

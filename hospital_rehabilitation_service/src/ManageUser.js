@@ -1,8 +1,29 @@
-import React from 'react';
+import React, {useState, useEffect, useContext} from 'react';
+import axios from 'axios';
 import Logo_inner from "./img/logo_inner.png";
 import User_icon from "./img/user_icon.png";
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import { HospitalContext } from '../src/context/HospitalContext'
+import { Link, useNavigate } from "react-router-dom";
+
 
 function ManageUser(props) {
+    const { role, Logout } = useContext(HospitalContext);
+    const [userInfo, setUserInfo] = useState({});
+
+    async function FetchData(){
+        await axios.get(`http://localhost:8080/getUser`)
+        .then((res) => {
+            setUserInfo(res.data.user)
+            console.log(res.data.user);
+        })
+      }
+
+    useEffect(() => {
+        FetchData();
+      }, []);
+
+
     return (
         <div>
             <div id="wrap">
@@ -17,24 +38,30 @@ function ManageUser(props) {
                                 <div className="navigation">
                                     <div className="userLnk">
                                         <div className="dropdown">
-                                            <button className="btn dropdown-toggle" type="button" data-toggle="dropdown"> <img src={User_icon} /> Super Admin
-                                                <span className="caret"></span></button>
-                                            <ul className="dropdown-menu">
-                                                <li><a href="#">Log Out</a></li>
-
-                                            </ul>
+                                        <DropdownButton title={role} >
+                                                <li><div onClick={Logout}>Log Out</div></li>
+                                            </DropdownButton>
                                         </div>
                                     </div>
                                     <div className="actionBtn">
                                         <div className="dropdown">
-                                            <button className="btn btn-prm dropdown-toggle" type="button" data-toggle="dropdown">Actions
+                                        <DropdownButton title="Action">
+                                                <Link to="/ManageUser">Manage Users</Link>
+                                                <br />
+                                                <Link to="#">Mange Services</Link>
+                                                <br />
+                                                <Link to="#">Manage Hospitals</Link>
+                                                <br />
+                                                <Link to="#">Change Requests</Link>
+                                            </DropdownButton>
+                                            {/* <button className="btn btn-prm dropdown-toggle" type="button" data-toggle="dropdown">Actions
                                                 <span className="caret"></span></button>
                                             <ul className="dropdown-menu">
                                                 <li><a href="#">Manage Users</a></li>
                                                 <li><a href="#">Mange Services</a></li>
                                                 <li><a href="#">Manage Hospitals</a></li>
                                                 <li><a href="#">Change Requestsv</a></li>
-                                            </ul>
+                                            </ul> */}
                                         </div>
 
                                     </div>
@@ -91,29 +118,6 @@ function ManageUser(props) {
                                             <td><span className="openSide">OpenSidebar</span></td>
                                             <td className="lastTblele"><a data-toggle="modal" data-target="#myModal" className="icon edit editIco"></a></td>
                                         </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Jacob</td>
-                                            <td>Thornton</td>
-                                            <td>@fat</td>
-                                            <td className="lastTblele"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Larry</td>
-                                            <td>the Bird</td>
-                                            <td>@twitter</td>
-                                            <td className="lastTblele"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Larry</td>
-                                            <td>the Bird</td>
-                                            <td>@twitter</td>
-                                            <td className="lastTblele"></td>
-                                        </tr>
-
-
                                     </tbody>
                                 </table>
                             </div>

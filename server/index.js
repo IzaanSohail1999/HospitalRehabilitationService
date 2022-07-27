@@ -172,13 +172,13 @@ app.put("/updatePassword", async (req, res) => {
         const update = {
              $set: 
                 { 
-                    firstName: req.body.firstName,
-                    lastName: req.body.lastName,
-                    hospital: req.body.hospital,
-                    departement: req.body.departement, 
-                    email: req.body.email,
+                    // firstName: req.body.firstName,
+                    // lastName: req.body.lastName,
+                    // hospital: req.body.hospital,
+                    // departement: req.body.departement, 
+                    // email: req.body.email,
                     password: req.body.password,
-                    role: req.body.role
+                    // role: req.body.role
                 } 
             };
         const filter = { email: email };
