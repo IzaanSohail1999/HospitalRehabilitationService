@@ -835,7 +835,7 @@ table.tblSecModal tbody tr td {
 }
   .select-style_grid {
     border: 1px solid #D4D7D9;
-    width: 120px;
+    width: auto;
     padding: 6px;
     overflow: hidden;
     background: #fff url("../img/select_arrow.png") no-repeat 90% 50%;
@@ -843,7 +843,7 @@ table.tblSecModal tbody tr td {
 
 .select-style_grid select {
  
-    width: 130%;
+    width: auto;
     font-weight: 400;
     font-size: 13px;
     border: none;
@@ -857,7 +857,7 @@ table.tblSecModal tbody tr td {
     outline: none;
 }
 .modal_big {
-  width: 750px;
+  width: auto;
 }
 
 

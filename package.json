@@ -5,5 +5,8 @@
     "jsonwebtoken": "^8.5.1",
     "react-cookie": "^4.1.1",
     "universal-cookie": "^4.0.4"
+  },
+  "devDependencies": {
+    "jest": "^28.1.3"
   }
 }

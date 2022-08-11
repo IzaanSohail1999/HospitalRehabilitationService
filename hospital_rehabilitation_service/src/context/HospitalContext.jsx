@@ -1,4 +1,4 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useEffect } from "react";
 import Cookies from 'universal-cookie';
 import { useNavigate } from "react-router-dom";
 
@@ -8,10 +8,14 @@ export default function HospitalProvider({ children }) {
     const cookies = new Cookies();
     let navigate = useNavigate();
     const [role, setRole] = useState("");
-
     const getRole = async() => {
         console.log(role);
     }
+
+    useEffect(() => {
+       setRole(cookies.get('role'));
+    }, []);
+
 
     const Login = async (email, pass) => {
         console.log(email,pass)
@@ -31,6 +35,7 @@ export default function HospitalProvider({ children }) {
             let post = result.result.role 
             console.log(post)
             setRole(post)
+            cookies.set('role', post);
             console.log(role)
             navigate('/');        
         } else {
@@ -60,6 +65,8 @@ export default function HospitalProvider({ children }) {
 
     const Logout = async () => {   
         setRole("")
+        cookies.remove("role");
+        cookies.remove("jwtoken");
         navigate("/Login")
     } 
     
@@ -83,8 +90,6 @@ export default function HospitalProvider({ children }) {
         } 
     }
     
-  
-
     async function ChangePassword(email, password, confirmpass){
         if(password === confirmpass){
             console.log("Confirm")

@@ -3,70 +3,33 @@ import User_icon from "./img/user_icon.png";
 import "./css/bootstrap.css";
 import "./css/style.css";
 import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import "./css/chosen.css";
 import React, { useState, useEffect, useContext } from 'react';
 import { HospitalContext } from '../src/context/HospitalContext'
 import { Link, useNavigate } from "react-router-dom";
+import Header from "./Header";
+import Footer from "./Footer";
+import axios from "axios";
 
 
 const Home = () => {
     const { role, Logout } = useContext(HospitalContext);
 
     return (
+        <div>
+            
         <div className="bg_main">
+            <Header/>
             <div id="wrap">
-                <div className="top nobg">
-                    <div className="head" style={{ borderBottom: "0px" }}>
-                        <div className="container">
-                            <div className="row">
-                                <div className="logo push-left">
-                                    <img src={Logo_inner} />
-                                </div>
-                                <h3>St George’s Hospital</h3>
-                                <div className="navigation">
-                                    <div className="userLnk">
-                                        <div className="dropdown">
-                                            <DropdownButton title={role} >
-                                                <li><div onClick={Logout}>Log Out</div></li>
-                                            </DropdownButton>
-                                        </div>
-                                    </div>
-                                    <div className="actionBtn">
-                                        <div className="dropdown">
-                                            <DropdownButton title="Action">
-                                                <Link to="/ManageUser">Manage Users</Link>
-                                                <br />
-                                                <Link to="#">Mange Services</Link>
-                                                <br />
-                                                <Link to="#">Manage Hospitals</Link>
-                                                <br />
-                                                <Link to="#">Change Requests</Link>
-                                            </DropdownButton>
-                                            {/* <button className="btn btn-prm dropdown-toggle" type="button" data-toggle="dropdown">Actions
-                                                <span className="caret"></span></button>
-                                            <ul className="dropdown-menu" multiple>
-                                                <li><a href="#">Manage Users</a></li>
-                                                <li><a href="#">Mange Services</a></li>
-                                                <li><a href="#">Manage Hospitals</a></li>
-                                                <li><a href="#">Change Requests</a></li>
-                                            </ul> */}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div className="mainpgContainer">
                     <h1 className="hmeMainHead">Discover</h1>
                     <h2 className="hmeSubHead">Best Rehabilitation Centre Near You</h2>
                     <div className="boxone">
                         <span>Choose Service</span>
                         <div className="selectcontainer" style={{ width: "100%" }}>
-                            <select data-placeholder="Slect Serivces" className="chosen-select" multiple >
+                            <select data-placeholder="Select Services" className="chosen-select" multiple >
                                 <option value=""></option>
                                 <option value="United States">One Service Provider</option>
                                 <option value="United States">Two</option>
@@ -98,7 +61,11 @@ const Home = () => {
 
                 </div>
             </div>
-        </div>
+        </div> 
+          {/* <div>
+          <Footer/>
+      </div> */}
+      </div>
     );
 }
 

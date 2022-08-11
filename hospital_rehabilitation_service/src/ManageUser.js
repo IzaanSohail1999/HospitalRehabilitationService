@@ -1,78 +1,77 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Logo_inner from "./img/logo_inner.png";
-import User_icon from "./img/user_icon.png";
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { HospitalContext } from '../src/context/HospitalContext'
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import bin from "./img/bin.jpg"
+import edit from "./img/edit.jpg"
+import { useNavigate } from "react-router-dom";
+import Footer from './Footer';
+import Header from './Header';
 
 
 function ManageUser(props) {
     const { role, Logout } = useContext(HospitalContext);
-    const [userInfo, setUserInfo] = useState({});
+    const [userInfo, setUserInfo] = useState([]);
+    const [search, setSearch] = useState(false)
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [hospital, setHospital] = useState('')
+    const [email, setEmail] = useState('')
+    const [post, setPost] = useState('')
 
-    async function FetchData(){
+    let navigate = useNavigate();
+
+    async function FetchAllData() {
         await axios.get(`http://localhost:8080/getUser`)
-        .then((res) => {
-            setUserInfo(res.data.user)
-            console.log(res.data.user);
-        })
-      }
+            .then((res) => {
+                setUserInfo(res.data.user)
+                console.log(res.data.user);
+            })
+    }
+
+    async function FetchParticularData() {
+        await axios.get(`http://localhost:8080/getParticularUser?email=${email}&firstName=${firstName}&lastName=${lastName}&hospital=${hospital}&post=${post}`)
+            .then((res) => {
+                setUserInfo(res.data.users)
+                console.log(res.data.users)
+            })
+    }
+
+    async function deleteUser(email) {
+        await axios.delete(`http://localhost:8080/deleteUser?email=${email}`)
+            .then(function (response) {
+                console.log(response.data);
+                alert("User Deleted")
+                navigate(0);
+            })
+    }
+
+    async function EditUser(email) {
+        console.log("Edited");
+        const url = "/EditUser?" + email
+        navigate(url)
+    }
+
+    async function log() {
+        console.log(firstName);
+        console.log(lastName);
+        console.log(hospital);
+        console.log(email);
+        console.log(post);
+        console.log(search)
+    }
 
     useEffect(() => {
-        FetchData();
-      }, []);
+        FetchAllData();
+    }, []);
 
 
     return (
         <div>
             <div id="wrap">
-                <div className="top">
-                    <div className="head">
-                        <div className="container">
-                            <div className="row">
-                                <div className="logo push-left">
-                                    <img src={Logo_inner} />
-                                </div>
-                                <h3>St George’s Hospital</h3>
-                                <div className="navigation">
-                                    <div className="userLnk">
-                                        <div className="dropdown">
-                                        <DropdownButton title={role} >
-                                                <li><div onClick={Logout}>Log Out</div></li>
-                                            </DropdownButton>
-                                        </div>
-                                    </div>
-                                    <div className="actionBtn">
-                                        <div className="dropdown">
-                                        <DropdownButton title="Action">
-                                                <Link to="/ManageUser">Manage Users</Link>
-                                                <br />
-                                                <Link to="#">Mange Services</Link>
-                                                <br />
-                                                <Link to="#">Manage Hospitals</Link>
-                                                <br />
-                                                <Link to="#">Change Requests</Link>
-                                            </DropdownButton>
-                                            {/* <button className="btn btn-prm dropdown-toggle" type="button" data-toggle="dropdown">Actions
-                                                <span className="caret"></span></button>
-                                            <ul className="dropdown-menu">
-                                                <li><a href="#">Manage Users</a></li>
-                                                <li><a href="#">Mange Services</a></li>
-                                                <li><a href="#">Manage Hospitals</a></li>
-                                                <li><a href="#">Change Requestsv</a></li>
-                                            </ul> */}
-                                        </div>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
+                <Header/>
                 <div className="pgbody">
 
 
@@ -81,43 +80,131 @@ function ManageUser(props) {
 
                             <div className="row pgHead">
                                 <h3 className="pgTitle">Manage User</h3>
-                                <a data-toggle="modal" data-target="#exampleModal" href="#_" className="actionBtn">Add User</a>
+                                <a data-toggle="modal" data-target="#exampleModal" href="/AddUser" className="actionBtn">Add User</a>
+                                <a style={{ marginRight: "0.5vh" }} onClick={FetchAllData} className="actionBtn">Back</a>
+
                             </div>
-                            <h3></h3>
 
                             <div className="row pgsection">
 
                                 <table className="table tblSec">
                                     <thead>
                                         <tr>
-                                            <th scope="col">#</th>
                                             <th scope="col">First</th>
                                             <th scope="col">Last</th>
-                                            <th scope="col">Handle</th>
-
+                                            <th scope="col">Hospital</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Role</th>
                                             <th scope="col" className="lastTblele">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td><input type="text" className="InputFrm" /></td>
-                                            <td><input type="text" className="InputFrm" /></td>
-                                            <td><input type="text" className="InputFrm" /></td>
-                                            <td><div className="select-style_grid">
-                                                <select>
-                                                    <option value="volvo">Services</option>
-                                                    <option value="saab">Name</option>
+                                            <td>
+                                                {firstName != "" && <div className="select-style_grid" style={{ borderColor: "green" }}>
+                                                    <select onChange={(e) => setFirstName(e.target.value)}>
+                                                        {userInfo && userInfo.map((user, index) => (
+                                                            <option>{user.firstName}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                    || <div className="select-style_grid">
+                                                        <select onChange={(e) => setFirstName(e.target.value)}>
+                                                            <option value="none" selected disabled hidden>Select...</option>
+                                                            {userInfo && userInfo.map((user, index) => (
+                                                                <option>{user.firstName}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td>
+                                                {lastName != "" && <div className="select-style_grid" style={{ borderColor: "green" }}>
+                                                    <select onChange={(e) => setLastName(e.target.value)}>
+                                                        {userInfo && userInfo.map((user, index) => (
+                                                            <option >{user.lastName}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                    || <div className="select-style_grid">
+                                                        <select onChange={(e) => setLastName(e.target.value)}>
+                                                            <option value="none" selected disabled hidden>Select...</option>
+                                                            {userInfo && userInfo.map((user, index) => (
+                                                                <option>{user.lastName}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td>
+                                                {hospital != "" && <div className="select-style_grid" style={{ borderColor: "green" }}>
+                                                    <select onChange={(e) => setHospital(e.target.value)}>
+                                                        {userInfo && userInfo.map((user, index) => (
+                                                            <option >{user.hospital}</option>
+                                                        ))}
+                                                    </select>
+                                                </div>
+                                                    || <div className="select-style_grid">
+                                                        <select onChange={(e) => setHospital(e.target.value)}>
+                                                            <option value="none" selected disabled hidden>Select...</option>
+                                                            {userInfo && userInfo.map((user, index) => (
+                                                                <option>{user.hospital}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td>
+                                                {email != 0 && <div className="select-style_grid" style={{ borderColor: "green" }}>
+                                                    <select onChange={(e) => setEmail(e.target.value)}>
+                                                        {userInfo && userInfo.map((user, index) => (
+                                                            <option >{user.email}</option>
+                                                        ))}
+                                                    </select>
+                                                </div> || <div className="select-style_grid">
+                                                        <select onChange={(e) => setEmail(e.target.value)}>
+                                                            <option value="none" selected disabled hidden>Select...</option>
+                                                            {userInfo && userInfo.map((user, index) => (
+                                                                <option>{user.email}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td>
+                                                {post != 0 &&
+                                                    <div className="select-style_grid" style={{ borderColor: "green" }}>
+                                                        <select onChange={(e) => setPost(e.target.value)}>
+                                                            {userInfo && userInfo.map((user, index) => (
+                                                                <option >{user.role}</option>
+                                                            ))}
 
-                                                </select></div></td>
-                                            <td className="lastTblele"></td>
+                                                        </select>
+                                                    </div> || <div className="select-style_grid">
+                                                        <select onChange={(e) => setPost(e.target.value)}>
+                                                            <option value="none" selected disabled hidden>Select...</option>
+                                                            {userInfo && userInfo.map((user, index) => (
+                                                                <option>{user.role}</option>
+                                                            ))}
+                                                        </select>
+                                                    </div>
+                                                }
+                                            </td>
+                                            <td><button onClick={() => FetchParticularData()}>Search</button></td>
                                         </tr>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Mark</td>
-                                            <td>Otto</td>
-                                            <td><span className="openSide">OpenSidebar</span></td>
-                                            <td className="lastTblele"><a data-toggle="modal" data-target="#myModal" className="icon edit editIco"></a></td>
-                                        </tr>
+
+                                        {userInfo && userInfo.map((user, index) => (
+                                            <tr>
+                                                {/* <td>{index+1}</td> */}
+                                                <td>{user.firstName}</td>
+                                                <td>{user.lastName}</td>
+                                                <td>{user.hospital}</td>
+                                                <td>{user.email}</td>
+                                                <td>{user.role}</td>
+                                                <td><img onClick={() => deleteUser(user.email)} style={{ height: "2vw", width: "2vw" }} src={bin} /></td>
+                                                <td><img onClick={() => EditUser(user.email)} style={{ height: "2vw", width: "2vw" }} src={edit} /></td>
+                                            </tr>
+                                        ))}
                                     </tbody>
                                 </table>
                             </div>
@@ -125,52 +212,8 @@ function ManageUser(props) {
                         </div>
                     </section>
                 </div>
-                <div className="footer">
-                    © Cardinal Management
-                </div>
-
-            </div>
-            <div id="myModal" className="modal fade" role="dialog">
-                <div className="modal-dialog modal_big">
-
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <button type="button" className="close" data-dismiss="modal">&times;</button>
-                            <h6 className="modal-title">Request update for</h6>
-                            <h4 className="modal-title">Service Provider</h4>
-                        </div>
-                        <div className="modal-body">
-                            <table className="table tblSecModal">
-                                <thead>
-                                    <tr>
-                                        <th>Label</th>
-                                        <th>label</th>
-                                        <th>label</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Label</td>
-                                        <td>Label</td>
-                                        <td>Label</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div className="modal-footer">
-                            <div style={{ float: "left" }}>
-                                <button type="button" className="btn btn-dft" data-dismiss="modal">CANCEL</button>
-                            </div>
-                            <div style={{ float: "right" }}>
-                                <button type="button" className="btn btn-rej" data-dismiss="modal">REJECT ALL</button>
-                                <button type="button" className="btn btn-prm" data-dismiss="modal">APPROVE ALL</button>
-
-                            </div>
-                            <br clear="all" />
-                        </div>
-                    </div>
-
+                <div>
+                    <Footer />
                 </div>
             </div>
         </div>
