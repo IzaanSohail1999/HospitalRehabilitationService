@@ -12,7 +12,7 @@ const login = async (req, res) => {
                 // creating token
                 const token = jwt.sign(result._id.toString(),process.env.ACCESS_TOKEN_SECRET);        
                 console.log({ result, auth: token });
-                res.send({result, auth: token});
+                res.status(200).send({result, auth: token});
             }
             else{
                 res.status(404).send({result:'user not found'});
@@ -75,11 +75,11 @@ function sendEmail(email, hash) {
         text: "Your OTP is " + hash + "."
     }
     transporter.sendMail(message, function(err, info) {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log(info);
-        }
+        // if (err) {
+        //     console.log(err)
+        // } else {
+        //     console.log(info);
+        // }
      })
 }
 

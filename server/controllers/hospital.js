@@ -4,22 +4,32 @@ require('dotenv').config();
 // app.use(cookieParser());
 const Hospitals = require('../Model/Hospitals');
 
-const saveHospital = async (req, res) => { 
+const saveHospital = async (req, res) => {
     console.log("Inside Post Api")
     try {
-        const hospital = new Hospitals({
-            hospitalID: req.body.hospitalID,
-            name: req.body.name,
-            service: req.body.service,
-            phone: req.body.phone,
-            fax: req.body.fax, 
-            email: req.body.email,
-            website: req.body.website,
-            location: req.body.location,
-        })
-
-        await hospital.save();
-        res.send("Hospital Data Saved");
+        if (req.body.name && req.body.address && req.body.email && req.body.phone && req.body.postCode && req.body.website) {
+            const email = req.body.email;
+            console.log(req.body.postCode);
+            const hospitals = await Hospitals.aggregate([
+                { $match: { email: email } }
+            ]);
+            if (hospitals.length === 0) {
+                const hospital = new Hospitals({
+                    name: req.body.name,
+                    address: req.body.address,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    postcode: req.body.postCode,
+                    website: req.body.website,
+                })
+                await hospital.save();
+                res.status(200).send({ result: "Hospital Data Saved" });
+            } else {
+                res.status(401).send({ result: "Hospital Already Exist" });
+            }
+        } else {
+            res.status(406).send({ result: 'Invalid Information' });
+        }
     } catch (error) {
         return error;
     }
@@ -34,7 +44,7 @@ const getHospital = async (req, res) => {
                 hospital: hospital
             });
         } else (
-            res.status(404).send({msg: "Hospital Not Found"})
+            res.status(404).send({ msg: "Hospital Not Found" })
         )
     } catch (error) {
         return error;
@@ -42,92 +52,132 @@ const getHospital = async (req, res) => {
 }
 
 const deleteHospital = async (req, res) => {
-    const hospitalID = req.query.hospitalID;
     try {
-        const hospitals = await Hospitals.deleteOne({ hospitalID });
-        res.status(200).json({
-            hospitals: hospitals
-        });
-    } catch (error) {
-        return error;
-    }
-}
-
-const updateHospitalDetails = async(req, res) => {
-    console.log("Inside Put Function")
-    const hospitalID = req.body.hospitalID;
-    console.log(hospitalID);
-    try {
-        const update = {
-             $set: 
-                {
-                    hospitalID: req.body.hospitalID,
-                    name: req.body.name,
-                    service: req.body.service,
-                    phone: req.body.phone,
-                    fax: req.body.fax, 
-                    email: req.body.email,
-                    website: req.body.website,
-                    location: req.body.location,
-                } 
-            };
-        const filter = { hospitalID: hospitalID };
-        // console.log(filter)
-        await Hospitals.updateOne(filter, update);
-        res.send("Hospital Data Updated");
-    } catch (error) {
-        return error;
-    }
-}
-
-const getParticularHospital = async(req, res) => {
-    console.log("Inside Get Particular Api")
-    const hospitalID = req.query.hospitalID;
-    const name = req.query.name;
-    const location = req.query.location;
-    const fax = req.query.fax;
-    const email = req.query.email;
-    const website = req.query.website
-    try {
+        if (req.query.email) {
+            const email = req.query.email;
             const hospitals = await Hospitals.aggregate([
-                {$match : {
-                    hospitalID : hospitalID, 
-                    name : name, 
-                    location: location , 
-                    fax: fax, 
-                    email : email,
-                    website : website
-                 }}
+                { $match: { email: email } }
             ]);
-            res.status(200).json({
-                hospitals: hospitals
-            });
+            if (hospitals.length !== 0) {
+                const hospitalEmail = req.query.email;
+                const hospitals = await Hospitals.deleteOne({ hospitalEmail });
+                res.status(200).json({
+                    hospitals: hospitals
+                });
+            } else {
+                res.status(404).send({ result: 'Not Found' });
+            }
+        }
+        else {
+            res.status(406).send({ result: 'Invalid Information' });
+        }
     } catch (error) {
-        console.log(error);
-        res.status(404).send({msg: "Hospital Not Found"})
+        return error;
     }
 }
 
-const getOneHospital = async(req, res) => {
-    console.log("Inside Get One Api")
-    const hospitalID = req.query.hospitalID;
-
+const updateHospitalDetails = async (req, res) => {
+    console.log("Inside Put Function")
     try {
-        const hospitals = await Hospitals.aggregate([
-            {$match : {hospitalID : hospitalID }}
-        ]);
-        res.status(200).json({
-            hospitals: hospitals
-        });
+        if (req.body.name && req.body.address && req.body.email && req.body.phone && req.body.postCode && req.body.website) {
+            const email = req.body.email;
+            const hospitals = await Hospitals.aggregate([
+                { $match: { email: email } }
+            ]);
+            if (hospitals.length !== 0) {
+                const update = {
+                    $set:
+                    {
+                        name: req.body.name,
+                        address: req.body.address,
+                        email: req.body.email,
+                        phone: req.body.phone,
+                        postcode: req.body.postCode,
+                        website: req.body.website,
+                    }
+                };
+                const filter = { email: email };
+                await Hospitals.updateOne(filter, update);
+                res.status(200).send({ result: "Hospital Data Updated"});
+            } else {
+                res.status(404).send({ result: 'Not Found' });
+            }
+        }
+        else {
+            res.status(406).send({ result: 'Invalid Information' });
+        }
+    } catch (error) {
+        return error;
+    }
+}
+
+const getParticularHospital = async (req, res) => {
+    console.log("Inside Get Particular Api")
+    try {
+        if (req.query.name && req.query.address && req.query.email && req.query.phone && req.query.postCode && req.query.website) {
+            const name = req.query.name;
+            const address = req.query.address;
+            const email = req.query.email;
+            const phone = req.query.phone;
+            const postCode = req.query.postCode;
+            const website = req.query.website
+            const hospitals = await Hospitals.aggregate([
+                {
+                    $match: {
+                        name: name,
+                        address: address,
+                        email: email,
+                        phone: phone,
+                        postcode: postCode,
+                        website: website
+                    }
+                }
+            ]);
+            if (hospitals.length !== 0) {
+
+                res.status(200).json({
+                    hospitals: hospitals
+                });
+            }
+            else {
+                res.status(404).send({ result: 'Not Found' });
+            }
+        } else {
+            res.status(406).send({ result: 'Invalid Information' });
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+const getOneHospital = async (req, res) => {
+    console.log("Inside Get One Api")
+    try {
+        if (req.query.email) {
+            const email = req.query.email;
+            const hospitals = await Hospitals.aggregate([
+                { $match: { email: email } }
+            ]);
+            if (hospitals.length !== 0) {
+                res.status(200).json({
+                    hospitals: hospitals
+                });
+            }
+            else {
+                res.status(404).send({ result: 'Not Found' });
+            }
+        } else {
+            res.status(406).send({ result: 'Invalid Information' });
+        }
 
     } catch (error) {
         console.log(error);
-        res.status(404).send({msg: "Hospital Not Found"})
+        res.status(404).send({ msg: "Hospital Not Found" })
     }
 }
 
 
-module.exports = { 
+module.exports = {
     saveHospital,
     getHospital,
     deleteHospital,

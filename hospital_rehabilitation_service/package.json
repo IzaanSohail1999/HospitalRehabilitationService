@@ -23,6 +23,9 @@
     "react-router": "^6.3.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
+    "cookie-parser": "^1.4.6",
+    "react-cookie": "^4.1.1",
+    "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
