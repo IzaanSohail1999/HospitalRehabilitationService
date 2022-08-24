@@ -3,7 +3,7 @@ const index = require("../index");
 
 test("Search Service by Service Name", async () => {
 await request(index)
-    .get("/search/searchService?serviceName=Inpatient Orthopaedic Occupational Therapy")
+    .get("/search/searchService?serviceName=Inpatient Orthopaedic Occupational Therapy&Category=Adult&Type=NHS")
     .expect((response) => {
     expect(response.status).toBe(200)
     })
@@ -11,7 +11,7 @@ await request(index)
 
 test("Search a Service No Provider Offers", async () => {
 await request(index)
-    .get("/search/searchService?serviceName=Unknown 43")
+    .get("/search/searchService?serviceName=Unknown 43&Category=Adult&Type=NHS")
     .expect((response) => {
     expect(response.status).toBe(401)
     response.body.result = "No Service Provider Offers this Service";
@@ -20,7 +20,7 @@ await request(index)
 
 test("Search a Service That doesnt exist", async () => {
 await request(index)
-    .get("/search/searchService?serviceName=Unknown")
+    .get("/search/searchService?serviceName=Unknown&Category=Adult&Type=NHS")
     .expect((response) => {
     expect(response.status).toBe(404)
     response.body.result = "service Doesnt Exist";
