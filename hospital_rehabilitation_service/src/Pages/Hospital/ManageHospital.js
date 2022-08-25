@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Header from './Header';
-import Footer from './Footer';
-import hospital_icon from "./img/hospital_icon.jpg";
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
+import hospital_icon from "../../img/hospital_icon.jpg";
 import axios from 'axios';
 
 function ManageHospital(props) {

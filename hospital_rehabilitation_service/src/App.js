@@ -1,13 +1,16 @@
 import {Route, Routes, BrowserRouter } from "react-router-dom";
-import Home from "./Home";
-import Login from "./Login";
-import ResetPassword from "./ResetPassword";
-import ChangePassword from "./ChangePassword";
-import ManageUser from "./ManageUser";
-import EditUser from "./EditUser";
-import HospitalProvider from './context/HospitalContext';
-import AddUser from "./AddUser";
-import ManageHospital from "./ManageHospital";
+import Home from "./Pages/Home/Home";
+import Login from "./Pages/Login/Login";
+import ResetPassword from "./Pages/Password/ResetPassword";
+import ChangePassword from "./Pages/Password/ChangePassword";
+import ManageUser from "./Pages/User/ManageUser";
+import EditUser from "./Pages/User/EditUser";
+import HospitalProvider from '../src/context/HospitalContext';
+import AddUser from "./Pages/User/AddUser";
+import ManageHospital from "./Pages/Hospital/ManageHospital";
+import TermsAndCondition from "./Pages/TermsAndCondition/TermsAndCondition";
+import PrivacyPolicy from "./Pages/PrivacyPolicy/PrivacyPolicy";
+import Cookie from "./Pages/Cookie/Cookie";
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
           <Route exact path="/ResetPassword" element={<ResetPassword/>}/>
           <Route exact path="/ChangePassword" element={<ChangePassword/>}/>
           <Route exact path="/ManageUser" element={<ManageUser/>}/>
+          <Route exact path="/TermsAndConditions" element={<TermsAndCondition/>}/>
+          <Route exact path="/PrivacyPolicy" element={<PrivacyPolicy/>}/>
+          <Route exact path="/Cookie" element={<Cookie/>}/>
         </Routes>
         </HospitalProvider>
       </BrowserRouter>

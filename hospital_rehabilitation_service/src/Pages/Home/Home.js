@@ -1,16 +1,16 @@
-import Logo_inner from "./img/logo_inner.png";
-import User_icon from "./img/user_icon.png";
-import "./css/bootstrap.css";
-import "./css/style.css";
+import Logo_inner from "../../img/logo_inner.png";
+import User_icon from "../../img/user_icon.png";
+import "../../css/bootstrap.css";
+import "../../css/style.css";
 import Dropdown from 'react-bootstrap/Dropdown';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
-import "./css/chosen.css";
+import "../../css/chosen.css";
 import React, { useState, useEffect, useContext } from 'react';
-import { HospitalContext } from '../src/context/HospitalContext'
+import { HospitalContext } from '../../context/HospitalContext'
 import { Link, useNavigate } from "react-router-dom";
-import Header from "./Header";
-import Footer from "./Footer";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
 import axios from "axios";
 
 

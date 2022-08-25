@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { HospitalContext } from '../src/context/HospitalContext'
-import Logo_inner from "./img/logo_inner.png";
+import { HospitalContext } from '../../context/HospitalContext'
+import Logo_inner from "../../img/logo_inner.png";
 import { Link } from "react-router-dom";
 import DropdownButton from 'react-bootstrap/DropdownButton';
 

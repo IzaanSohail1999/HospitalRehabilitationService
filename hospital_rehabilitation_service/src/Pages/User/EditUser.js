@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect, useContext } from 'react';
-import { HospitalContext } from '../src/context/HospitalContext'
-import Logo_inner from "./img/logo_inner.png";
+import { HospitalContext } from '../../context/HospitalContext'
+import Logo_inner from "../../img/logo_inner.png";
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import Header from "./Header";
-import Footer from "./Footer";
-import Logo from "./img/logo.png";
+import Header from "../Header/Header";
+import Footer from "../Footer/Footer";
+import Logo from "../../img/logo.png";
 import axios from 'axios';
 import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';

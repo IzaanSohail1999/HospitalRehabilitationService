@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import Logo_inner from "./img/logo_inner.png";
+// import Logo_inner from "./img/logo_inner.png";
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { HospitalContext } from '../src/context/HospitalContext'
+import { HospitalContext } from '../../context/HospitalContext'
 import { Link } from "react-router-dom";
-import bin from "./img/bin.jpg"
-import edit from "./img/edit.jpg"
+import bin from "../../img/bin.jpg"
+import edit from "../../img/edit.jpg"
 import { useNavigate } from "react-router-dom";
-import Footer from './Footer';
-import Header from './Header';
+import Footer from '../Footer/Footer';
+import Header from './../Header/Header';
 
 
 function ManageUser(props) {

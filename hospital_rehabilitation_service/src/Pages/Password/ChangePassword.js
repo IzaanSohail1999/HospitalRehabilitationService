@@ -1,7 +1,7 @@
 import React, {useState, useContext} from 'react';
-import Logo from "./img/logo.png";
-import { HospitalContext } from '../src/context/HospitalContext'
-
+import Logo from "../../img/logo.png";
+import { HospitalContext } from '../../context/HospitalContext'
+import { Link, useNavigate, NavLink } from "react-router-dom";
 
 function ChangePassword() {
     const {ChangePassword} = useContext(HospitalContext);
@@ -32,6 +32,9 @@ function ChangePassword() {
                         <label>Confirm Password</label>
                         <input onChange={(e) => setConfirmpass(e.target.value)} type="password" className="inputborder-btm field" /><br /><br />
                         <button onClick={changePass} type="submit" className="Loginbtn" >Change Password</button>
+                        <div style={{ textAlign: "center" }}>
+                                <Link className="forgot" to="/Login">Back To Login</Link>
+                            </div>
                     </div>
                 </div>
             </div>

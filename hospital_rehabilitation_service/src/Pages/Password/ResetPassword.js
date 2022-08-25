@@ -1,7 +1,9 @@
 import React ,{ useState } from "react";
 import { useContext } from "react";
-import { HospitalContext } from '../src/context/HospitalContext'
-import Logo from "./img/logo.png";
+import { HospitalContext } from '../../context/HospitalContext'
+import Logo from "../../img/logo.png";
+import { Link, useNavigate, NavLink } from "react-router-dom";
+
 
 function ResetPassword(props) {
     const [email, setEmail] = useState('');
@@ -32,6 +34,9 @@ function ResetPassword(props) {
                         <label>OTP</label>
                         <input onChange={(e) => setOtp(e.target.value)} type="text" className="inputborder-btm field" /><br /><br />
                         <button onClick={verify} type="submit" className="Loginbtn" >Verify OTP</button>
+                        <div style={{ textAlign: "center" }}>
+                            <Link className="forgot" to="/Login">Back To Login</Link>
+                        </div>
                     </div>
                 </div>
             </div>
