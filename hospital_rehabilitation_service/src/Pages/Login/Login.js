@@ -29,10 +29,10 @@ const Login = () => {
                             <input onChange={(e) => setEmail(e.target.value)} type="text" className="inputborder-btm field" /><br /><br />
                             <label for="">Password</label>
                             <input onChange={(e) => setPass(e.target.value)} type="password" className="field" /><br />
+                            <button onClick={isValid} type="submit" className="Loginbtn" >Login</button>
                             <div style={{ textAlign: "center" }}>
                                 <Link className="forgot" to="/ResetPassword">Forgot Password?</Link>
                             </div>
-                            <button onClick={isValid} type="submit" className="Loginbtn" >Login</button>
                         </div>
 
                     </div>
