@@ -1,13 +1,7 @@
-import { Link } from "react-router-dom";
 import React, { useState, useEffect, useContext } from 'react';
-import { HospitalContext } from '../../context/HospitalContext'
-import Logo_inner from "../../img/logo_inner.png";
-import DropdownButton from 'react-bootstrap/DropdownButton';
 import Header from "../Header/Header";
-import Footer from "../Footer/Footer";
 import Logo from "../../img/logo.png";
 import axios from 'axios';
-import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
 import { useNavigate } from "react-router-dom";
 
@@ -26,7 +20,7 @@ function EditUser(props) {
     const [userInfo, setUserInfo] = useState([]);
 
     async function FetchData() {
-        await axios.get(`http://localhost:8080/getOneUser?email=${email}`)
+        await axios.get(`http://localhost:8080/user/getOneUser?email=${email}`)
             .then((res) => {
                 console.log(res.data.users[0])
                 setUserInfo(res.data.users[0])
@@ -44,7 +38,7 @@ function EditUser(props) {
     }, []);
 
     async function updateData() {
-        await fetch(`http://localhost:8080/updateUserDetails`, {
+        await fetch(`http://localhost:8080/user/updateUserDetails`, {
             method: 'put',
             body: JSON.stringify({
                 firstName: firstName,
@@ -71,6 +65,9 @@ function EditUser(props) {
             <Header />
             <div className="login-bg">
                 <div id="wrap">
+                    <div style={{ marginRight: "5vh" }}className="row pgHead">
+                        <a href="/ManageUser" className="actionBtn">Back</a>
+                    </div>
                     <div className="loginParentContainer">
                         <div className="subContainer">
                             <div style={{ textAlign: "center" }}>

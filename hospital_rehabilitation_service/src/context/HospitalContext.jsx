@@ -97,7 +97,7 @@ export default function HospitalProvider({ children }) {
         else{
             console.log("Reject")
         }     
-        await fetch(`http://localhost:8080/updatePassword`, {
+        await fetch(`http://localhost:8080/user/updatePassword`, {
             method: 'put',   
             body: JSON.stringify({
                 email: email,

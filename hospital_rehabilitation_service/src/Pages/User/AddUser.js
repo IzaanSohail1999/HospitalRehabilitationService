@@ -15,7 +15,7 @@ function AddUser(props) {
     const [password, setPassword] = useState('');
 
     async function AddData(){
-        let result = await fetch('http://localhost:8080/saveUser', {
+        let result = await fetch('http://localhost:8080/user/saveUser', {
             method: 'post',
             body: JSON.stringify({
                 "firstName": firstName,
@@ -30,8 +30,6 @@ function AddUser(props) {
                 'Content-Type': 'application/json'
             }
         });
-        // result = await result.json();
-        // console.log(result);
         navigate("/ManageUser");
     }
 
@@ -40,6 +38,9 @@ function AddUser(props) {
             <Header/>
             <div className="login-bg">
                 <div id="wrap">
+                    <div style={{ marginRight: "5vh" }}className="row pgHead">
+                        <a href="/ManageUser" className="actionBtn">Back</a>
+                    </div>
                     <div className="loginParentContainer">
                         <div className="subContainer">
                             <div style={{ textAlign: "center" }}>
@@ -61,7 +62,7 @@ function AddUser(props) {
                                 <input type="text" onChange={(e) => setDepartement(e.target.value)} className="inputborder-btm field" /><br /><br />
                                 <label>Password</label>
                                 <input type="text"  onChange={(e) => setPassword(e.target.value)} className="inputborder-btm field" /><br /><br />
-                                <button onClick={AddData} className="Loginbtn" >Update Details</button>
+                                <button onClick={AddData} className="Loginbtn" >Add User</button>
                             </div>
                         </div>
                     </div>

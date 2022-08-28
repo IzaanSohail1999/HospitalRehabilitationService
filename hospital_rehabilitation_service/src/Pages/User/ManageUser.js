@@ -24,7 +24,7 @@ function ManageUser(props) {
     let navigate = useNavigate();
 
     async function FetchAllData() {
-        await axios.get(`http://localhost:8080/getUser`)
+        await axios.get(`http://localhost:8080/user/getUser`)
             .then((res) => {
                 setUserInfo(res.data.user)
                 console.log(res.data.user);
@@ -32,7 +32,7 @@ function ManageUser(props) {
     }
 
     async function FetchParticularData() {
-        await axios.get(`http://localhost:8080/getParticularUser?email=${email}&firstName=${firstName}&lastName=${lastName}&hospital=${hospital}&post=${post}`)
+        await axios.get(`http://localhost:8080/user/getParticularUser?email=${email}&firstName=${firstName}&lastName=${lastName}&hospital=${hospital}&post=${post}`)
             .then((res) => {
                 setUserInfo(res.data.users)
                 console.log(res.data.users)
@@ -40,7 +40,7 @@ function ManageUser(props) {
     }
 
     async function deleteUser(email) {
-        await axios.delete(`http://localhost:8080/deleteUser?email=${email}`)
+        await axios.delete(`http://localhost:8080/user/deleteUser?email=${email}`)
             .then(function (response) {
                 console.log(response.data);
                 alert("User Deleted")
@@ -71,20 +71,15 @@ function ManageUser(props) {
     return (
         <div>
             <div id="wrap">
-                <Header/>
+                <Header />
                 <div className="pgbody">
-
-
                     <section className="contentBg">
                         <div className="container">
-
                             <div className="row pgHead">
                                 <h3 className="pgTitle">Manage User</h3>
-                                <a data-toggle="modal" data-target="#exampleModal" href="/AddUser" className="actionBtn">Add User</a>
-                                <a style={{ marginRight: "0.5vh" }} onClick={FetchAllData} className="actionBtn">Back</a>
-
+                                <a href="/AddUser" className="actionBtn">Add User</a>
+                                <a style={{ marginRight: "0.5vh" }} href="/" className="actionBtn">Back</a>
                             </div>
-
                             <div className="row pgsection">
 
                                 <table className="table tblSec">
@@ -190,7 +185,10 @@ function ManageUser(props) {
                                                     </div>
                                                 }
                                             </td>
-                                            <td><button onClick={() => FetchParticularData()}>Search</button></td>
+                                            <td>
+                                                <button style={{marginRight:"1vh"}} onClick={() => FetchParticularData()}>Search</button>
+                                                <button onClick={() => FetchAllData()}>Back</button>
+                                            </td>
                                         </tr>
 
                                         {userInfo && userInfo.map((user, index) => (
@@ -214,6 +212,48 @@ function ManageUser(props) {
                 </div>
                 <div>
                     <Footer />
+                </div>
+            </div>
+            <div id="myModal" className="modal fade" role="dialog">
+                <div className="modal-dialog modal_big">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <button type="button" className="close" data-dismiss="modal">&times;</button>
+                            <h6 className="modal-title">Request update for</h6>
+                            <h4 className="modal-title">Service Provider</h4>
+                        </div>
+                        <div className="modal-body">
+                            <table className="table tblSecModal">
+                                <thead>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>label</th>
+                                        <th>label</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Label</td>
+                                        <td>Label</td>
+                                        <td>Label</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div className="modal-footer">
+                            <div style={{ float: "left" }}>
+                                <button type="button" className="btn btn-dft" data-dismiss="modal">CANCEL</button>
+                            </div>
+                            <div style={{ float: "right" }}>
+                                <button type="button" className="btn btn-rej" data-dismiss="modal">REJECT ALL</button>
+                                <button type="button" className="btn btn-prm" data-dismiss="modal">APPROVE ALL</button>
+
+                            </div>
+                            <br clear="all" />
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
